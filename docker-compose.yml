@@ -1,0 +1,15 @@
+services:
+  monerod:
+    image: monerod:v0.18.3.4
+    build:
+      context: .
+    user: ${FIXUID:-1000}:${FIXGID:-1000}
+    restart: unless-stopped
+    container_name: monerod
+    volumes:
+      - /home/debian/.bitmonero:/home/monero/.bitmonero # monero data
+      - ./monerod.conf:/etc/monero/monerod.conf # monero config
+    ports:
+      - 18081:18081 # rpc
+      # - 18089:18089   # restricted rpc
+      # - 18080:18080   # p2p
