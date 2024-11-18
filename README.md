@@ -82,4 +82,4 @@ docker compose up -d
 
 ## References
 
-- Credit to Seth For Privacy/@sethforprivacy for [sethforprivacy/simple-monerod-docker](https://github.com/sethforprivacy/simple-monerod-docker), from which several parts were copied or adapted for this project.
+- Credit to Seth For Privacy/@sethforprivacy for [simple-monerod-docker](https://github.com/sethforprivacy/simple-monerod-docker), from which several parts were copied or adapted for this project.
