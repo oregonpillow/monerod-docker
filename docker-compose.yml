@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     container_name: monerod
     volumes:
-      - /home/debian/.bitmonero:/home/monero/.bitmonero # monero data
+      - ./data/:/home/monero/.bitmonero # monero data
       - ./monerod.conf:/etc/monero/monerod.conf         # monero config
     ports:
       - 18081:18081     # rpc

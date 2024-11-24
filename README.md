@@ -77,6 +77,7 @@ $ docker logs monerod
 - Update your desired settings in `monerod.conf`
 
 ```bash
+mkdir data && sudo chown ${USER}:root data
 docker compose up -d
 ```
 
