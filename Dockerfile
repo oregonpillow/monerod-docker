@@ -50,31 +50,24 @@ RUN rm /tmp/${MONERO_ARCHIVE_NAME} /tmp/key.key
 FROM debian:12.8-slim AS final
 ARG MONERO_USER="monero"
 ARG MONERO_VERSION
-ARG FIXUID_VERSION="0.6.0"
+ARG PUID
+ARG PGID
 RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
-RUN useradd -m -s /bin/bash monero && mkdir -p /home/monero/.bitmonero && chown -R monero:monero /home/monero/.bitmonero
-RUN mkdir -p /etc/monero && chown -R monero:monero /etc/monero
+RUN groupadd -g ${PGID} ${MONERO_USER} && useradd -m -s /bin/bash -u ${PUID} -g ${PGID} ${MONERO_USER}
+RUN mkdir -p /etc/monero && chown -R ${MONERO_USER}:${MONERO_USER} /etc/monero
 
 # copy and enable entrypoint script
 ADD entrypoint.sh /entrypoint.sh
 RUN chmod +x entrypoint.sh && sed -i -e "s/VERSION_NUMBER/${MONERO_VERSION}/" /entrypoint.sh
-ENTRYPOINT [ "/entrypoint.sh" ]
-
-# install and configure fixuid and switch to MONERO_USER
-RUN wget https://github.com/boxboat/fixuid/releases/download/v${FIXUID_VERSION}/fixuid-${FIXUID_VERSION}-linux-amd64.tar.gz \
-    -O /tmp/fixuid-${FIXUID_VERSION}-linux-amd64.tar.gz \
-    && tar -xzf /tmp/fixuid-${FIXUID_VERSION}-linux-amd64.tar.gz -C /usr/local/bin \
-    && chown root:root /usr/local/bin/fixuid \
-    && chmod 4755 /usr/local/bin/fixuid \
-    && mkdir -p /etc/fixuid && \
-    printf "user: ${MONERO_USER}\ngroup: ${MONERO_USER}\n" >/etc/fixuid/config.yml
 
 # switch to MONERO_USER
 USER "${MONERO_USER}:${MONERO_USER}"
 
+ENTRYPOINT [ "/entrypoint.sh" ]
+
 # copy monerod binary
 WORKDIR /home/${MONERO_USER}
-COPY --chown=monero:monero --from=download /tmp/monero/monerod /usr/local/bin/monerod
+COPY --chown=${MONERO_USER}:root --from=download /tmp/monero/monerod /usr/local/bin/monerod
 
 # p2p port
 EXPOSE 18080

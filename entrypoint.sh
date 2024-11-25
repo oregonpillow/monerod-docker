@@ -17,7 +17,7 @@ cat <<"EOF"
             ##########          ##  ###   ##  ########  ###   ###  ####### ###   ##   ########      
        ####################                                                                         
         ##################                   monerod: The Monero Daemon                                                       
-           ############                      version: v0.18.3.4                                                       
+           ############                      version: VERSION_NUMBER                                                       
                 ##                                                                                  
                                                                                                                                                                                                     
 EOF
@@ -25,11 +25,5 @@ EOF
 # Set require --non-interactive flag
 set -- "monerod" "--non-interactive" "$@"
 
-# Configure NUMA if present for improved performance
-if command -v numactl >/dev/null 2>&1; then
-    numa="numactl --interleave=all"
-    set -- "$numa" "$@"
-fi
-# Start the daemon using fixuid
-# to adjust permissions if needed
-exec fixuid -q "$@"
+# Execute the command as the monero user
+exec "$@"
