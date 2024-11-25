@@ -1,14 +1,17 @@
 services:
   monerod:
-    image: monerod:v0.18.3.4
+    image: monerod:0.18.3.4
     pull_policy: build
     build:
       context: .
-    user: "1000:1000"
+      args:
+        - MONERO_VERSION=0.18.3.4
+        - PUID=1000
+        - PGID=1000
     restart: unless-stopped
     container_name: monerod
     volumes:
-      - ./data/:/home/monero/.bitmonero # monero data
+      - ./data:/home/monero/.bitmonero # monero data
       - ./monerod.conf:/etc/monero/monerod.conf         # monero config
     ports:
       - 18081:18081     # rpc
