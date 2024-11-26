@@ -65,7 +65,7 @@ ENTRYPOINT [ "/entrypoint.sh" ]
 
 # copy monerod binary
 WORKDIR /home/${MONERO_USER}
-COPY --chown=${MONERO_USER}:root --from=download /tmp/monero/monerod /usr/local/bin/monerod
+COPY --chown=${MONERO_USER}:${MONERO_USER} --from=download /tmp/monero/monerod /usr/local/bin/monerod
 
 # p2p port
 EXPOSE 18080
