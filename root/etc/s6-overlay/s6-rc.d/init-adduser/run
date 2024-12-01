@@ -1,0 +1,39 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+if [[ -z ${LSIO_READ_ONLY_FS} ]] && [[ -z ${LSIO_NON_ROOT_USER} ]]; then
+    groupmod -o -g "$PGID" abc
+    usermod -o -u "$PUID" abc
+fi
+
+if { [[ -z ${LSIO_READ_ONLY_FS} ]] && [[ -z ${LSIO_NON_ROOT_USER} ]]; } || [[ ! ${LSIO_FIRST_PARTY} = "true" ]]; then
+    sed -i -e "s/VERSION_NUMBER/${MONERO_VERSION}/" /etc/s6-overlay/s6-rc.d/init-adduser/branding
+    cat /etc/s6-overlay/s6-rc.d/init-adduser/branding
+else
+    cat /run/branding
+fi
+
+echo '
+───────────────────────────────────────
+GID/UID
+───────────────────────────────────────'
+if [[ -z ${LSIO_NON_ROOT_USER} ]]; then
+echo "
+User UID:    $(id -u abc)
+User GID:    $(id -g abc)
+───────────────────────────────────────"
+else
+echo "
+User UID:    $(stat /run -c %u)
+User GID:    $(stat /run -c %g)
+───────────────────────────────────────"
+fi
+
+if [[ -z ${LSIO_READ_ONLY_FS} ]] && [[ -z ${LSIO_NON_ROOT_USER} ]]; then
+    lsiown abc:abc /app
+    lsiown abc:abc /config
+    lsiown abc:abc /defaults
+fi

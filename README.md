@@ -62,11 +62,6 @@ $ docker logs monerod
 2024-11-17 18:26:43.208 I Synced 3283513/3283513
 ```
 
-## Requirements
-
-- Docker
-- docker compose
-
 ## Getting Started
 
 - Update the `docker-compose.yml` volume mounts for
@@ -77,7 +72,6 @@ $ docker logs monerod
 - Update your desired settings in `monerod.conf`
 
 ```bash
-mkdir data
 docker compose up -d
 ```
 
