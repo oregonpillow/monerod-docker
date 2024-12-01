@@ -49,8 +49,7 @@ FROM ghcr.io/linuxserver/baseimage-debian:bookworm AS final
 ARG MONERO_VERSION
 ENV MONERO_VERSION=${MONERO_VERSION}
 
-RUN mkdir -p /etc/monero && mkdir -p /app/monero/bitmonero && \
-    mkdir /app/monero/bin && echo ${MONERO_VERSION} > /app/monero/version.txt
+RUN mkdir -p /app/monero/bitmonero && mkdir /app/monero/bin
 
 COPY --from=download /tmp/monero/monerod /app/monero/bin/monerod
 
