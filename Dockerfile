@@ -45,29 +45,11 @@ RUN mkdir /tmp/monero && tar -xjf /tmp/${MONERO_ARCHIVE_NAME} --strip-components
 RUN rm /tmp/${MONERO_ARCHIVE_NAME} /tmp/key.key
 
 # FINAL STAGE #######################################################################################
-# FROM debian:12.8-slim AS final
-FROM docker-baseimage-debian AS final
-#ARG MONERO_USER="monero"
+FROM ghcr.io/linuxserver/baseimage-debian:bookworm AS final
 ARG MONERO_VERSION
-# ARG PUID
-# ARG PGID
-# RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/* && \
-#     groupadd -g ${PGID} ${MONERO_USER} && useradd -m -s /bin/bash -u ${PUID} -g ${PGID} ${MONERO_USER} && \
-#     mkdir -p /etc/monero && chown -R ${MONERO_USER}:${MONERO_USER} /etc/monero
 
 RUN mkdir -p /etc/monero && mkdir -p /app/monero/bitmonero && mkdir /app/monero/bin
 
-# copy and enable entrypoint script
-# ADD entrypoint.sh /app/monero/entrypoint.sh
-# RUN chmod +x /app/monero/entrypoint.sh && sed -i -e "s/VERSION_NUMBER/${MONERO_VERSION}/" /app/monero/entrypoint.sh
-
-# switch to MONERO_USER
-# USER "${MONERO_USER}:${MONERO_USER}"
-
-# ENTRYPOINT [ "/entrypoint.sh" ]
-
-# copy monerod binary
-# WORKDIR /home/${MONERO_USER}
 COPY --from=download /tmp/monero/monerod /app/monero/bin/monerod
 
 COPY root/ /
@@ -80,10 +62,3 @@ EXPOSE 18089
 
 # unrestricted RPC port
 EXPOSE 18081
-
-# healthcheck against get_info endpoint
-# HEALTHCHECK --interval=30s --timeout=5s \
-#     CMD { wget --quiet --output-document=- http://localhost:18081/get_height | grep --quiet '"status": "OK"'; } \
-#     || exit 1
-
-# CMD ["--config-file=/etc/monero/monerod.conf"]

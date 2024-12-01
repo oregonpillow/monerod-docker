@@ -6,8 +6,6 @@ services:
       context: .
       args:
         - MONERO_VERSION=0.18.3.4
-        # - PUID=1000
-        # - PGID=1000
     restart: unless-stopped
     container_name: monerod
     volumes:
