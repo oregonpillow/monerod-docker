@@ -45,27 +45,32 @@ RUN mkdir /tmp/monero && tar -xjf /tmp/${MONERO_ARCHIVE_NAME} --strip-components
 RUN rm /tmp/${MONERO_ARCHIVE_NAME} /tmp/key.key
 
 # FINAL STAGE #######################################################################################
-FROM debian:12.8-slim AS final
-ARG MONERO_USER="monero"
+# FROM debian:12.8-slim AS final
+FROM docker-baseimage-debian AS final
+#ARG MONERO_USER="monero"
 ARG MONERO_VERSION
-ARG PUID
-ARG PGID
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/* && \
-    groupadd -g ${PGID} ${MONERO_USER} && useradd -m -s /bin/bash -u ${PUID} -g ${PGID} ${MONERO_USER} && \
-    mkdir -p /etc/monero && chown -R ${MONERO_USER}:${MONERO_USER} /etc/monero
+# ARG PUID
+# ARG PGID
+# RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/* && \
+#     groupadd -g ${PGID} ${MONERO_USER} && useradd -m -s /bin/bash -u ${PUID} -g ${PGID} ${MONERO_USER} && \
+#     mkdir -p /etc/monero && chown -R ${MONERO_USER}:${MONERO_USER} /etc/monero
+
+RUN mkdir -p /etc/monero && mkdir -p /app/monero/bitmonero && mkdir /app/monero/bin
 
 # copy and enable entrypoint script
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod +x entrypoint.sh && sed -i -e "s/VERSION_NUMBER/${MONERO_VERSION}/" /entrypoint.sh
+# ADD entrypoint.sh /app/monero/entrypoint.sh
+# RUN chmod +x /app/monero/entrypoint.sh && sed -i -e "s/VERSION_NUMBER/${MONERO_VERSION}/" /app/monero/entrypoint.sh
 
 # switch to MONERO_USER
-USER "${MONERO_USER}:${MONERO_USER}"
+# USER "${MONERO_USER}:${MONERO_USER}"
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+# ENTRYPOINT [ "/entrypoint.sh" ]
 
 # copy monerod binary
-WORKDIR /home/${MONERO_USER}
-COPY --chown=${MONERO_USER}:${MONERO_USER} --from=download /tmp/monero/monerod /usr/local/bin/monerod
+# WORKDIR /home/${MONERO_USER}
+COPY --from=download /tmp/monero/monerod /app/monero/bin/monerod
+
+COPY root/ /
 
 # p2p port
 EXPOSE 18080
@@ -77,8 +82,8 @@ EXPOSE 18089
 EXPOSE 18081
 
 # healthcheck against get_info endpoint
-HEALTHCHECK --interval=30s --timeout=5s \
-    CMD { wget --quiet --output-document=- http://localhost:18081/get_height | grep --quiet '"status": "OK"'; } \
-    || exit 1
+# HEALTHCHECK --interval=30s --timeout=5s \
+#     CMD { wget --quiet --output-document=- http://localhost:18081/get_height | grep --quiet '"status": "OK"'; } \
+#     || exit 1
 
-CMD ["--config-file=/etc/monero/monerod.conf"]
+# CMD ["--config-file=/etc/monero/monerod.conf"]
