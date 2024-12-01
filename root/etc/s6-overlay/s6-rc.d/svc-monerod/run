@@ -3,4 +3,4 @@
 
 exec \
     s6-notifyoncheck -d -n 300 -w 1000 \
-        cd /app/monero/bin s6-setuidgid abc /app/monero/bin/monerod --non-interactive --config-file=/etc/monero/monerod.conf
+        cd /app/monero/bin s6-setuidgid abc /app/monero/bin/monerod --non-interactive --config-file=/app/monero/monerod.conf

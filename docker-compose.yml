@@ -10,7 +10,7 @@ services:
     container_name: monerod
     volumes:
       - ./data:/app/monero/bitmonero # monero data
-      - ./monerod.conf:/etc/monero/monerod.conf         # monero config
+      - ./monerod.conf:/app/monero/monerod.conf         # monero config
     ports:
       - 18081:18081     # rpc
       # - 18089:18089   # restricted rpc
