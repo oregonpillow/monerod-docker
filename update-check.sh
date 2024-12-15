@@ -16,9 +16,12 @@ if [ ! -d "$REPOSITORY_PATH" ]; then
   exit 1
 fi
 
-cd "$DIRECTORY_PATH" || { echo "Failed to change directory to: $DIRECTORY_PATH"; exit 1; }
+cd "$DIRECTORY_PATH" || {
+  echo "Failed to change directory to: $DIRECTORY_PATH"
+  exit 1
+}
 
-API=$( wget --quiet -O- https://api.github.com/repos/monero-project/monero/tags | jq -r '.[0].name')
+API=$(wget --quiet -O- https://api.github.com/repos/monero-project/monero/tags | jq -r '.[0].name')
 
 NEWEST="${API#v}"
 CURRENT=$(grep 'MONERO_VERSION' .github/workflows/docker-image.yml | awk -F': ' '{print $2}')
@@ -33,7 +36,9 @@ if [[ ! "$CURRENT" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 
 if [ "$NEWEST" != "$CURRENT" ]; then
-  find . -type d \( -path ./git -o -path ./data \) -prune -o -type f -exec sed -i "s/${CURRENT}/${NEWEST}/g" {} + && \
-  git add -A && git commit -m "🚀 version bump ${CURRENT} --> ${NEWEST}" && git push && \
-  echo "$(date +"%Y-%m-%d %H:%M:%S") 🚀 Version Update: $CURRENT --> $NEWEST"
+  find . -type d \( -path ./git -o -path ./data \) -prune -o -type f -exec sed -i "s/${CURRENT}/${NEWEST}/g" {} + \
+    && git add -A && git commit -m "🚀 version bump ${CURRENT} --> ${NEWEST}" && git push \
+    && echo "$(date +"%Y-%m-%d %H:%M:%S") 🚀 Version Update: $CURRENT --> $NEWEST"
+else
+  echo "$(date +"%Y-%m-%d %H:%M:%S") No update required."
 fi
