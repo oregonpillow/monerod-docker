@@ -4,13 +4,9 @@ on:
   push:
     paths:
       - "Dockerfile"
-      - "docker-compose.build.yml"
-      - ".github/workflows/docker-image.yml"
   pull_request:
     paths:
       - "Dockerfile"
-      - "docker-compose.build.yml"
-      - ".github/workflows/docker-image.yml"
 
 env:
   MONERO_VERSION: 0.18.3.4
