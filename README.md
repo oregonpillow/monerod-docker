@@ -57,11 +57,11 @@ docker compose -f docker-compose.build.yml up -d
 
 ## Build Arguments
 
-| Argument         | Description                                                                                                                                                                                    |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MONERO_VERSION` | The version of Monero to use. e.g. `0.18.3.4`                                                                                                                                                  |
-| `PUID`           | User ID for the Monero user. e.g. `1000`                                                                                                                                                       |
-| `PGID`           | Group ID for the Monero user. e.g. `1000`                                                                                                                                                      |
+| Argument         | Description                                                                                                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MONERO_VERSION` | The version of Monero to use. e.g. `0.18.3.4`                                                                                                                                 |
+| `PUID`           | User ID for the Monero user. e.g. `1000`                                                                                                                                      |
+| `PGID`           | Group ID for the Monero user. e.g. `1000`                                                                                                                                     |
 | `PLATFORM`       | Platform binary to download. Possible values: `android-armv7`, `android-armv8`, `freebsd-x64`, `linux-armv7`, `linux-armv8`, `linux-x64`, `linux-x86`, `mac-armv8`, `mac-x64` |
 
 ## Building monerod binary from source
@@ -71,7 +71,3 @@ If you want the Monero dameon built from source in a container, I recommend:
 
 - [sethforprivacy/simple-monerod-docker](https://github.com/sethforprivacy/simple-monerod-docker)
 - [official Monero Dockerfile](https://github.com/monero-project/monero)
-
-## References
-
-- Credit to Seth For Privacy/@sethforprivacy for [simple-monerod-docker](https://github.com/sethforprivacy/simple-monerod-docker), from which several parts were copied or adapted for this project.
