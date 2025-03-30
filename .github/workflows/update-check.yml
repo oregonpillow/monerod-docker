@@ -1,0 +1,25 @@
+name: Update Check
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        # Fine-grained PAT with contents:write and workflows:write
+        # scopes
+        token: ${{ secrets.WORKFLOW_TOKEN }}
+    - name: Git setup
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Update check
+      run: ./update-check.sh .

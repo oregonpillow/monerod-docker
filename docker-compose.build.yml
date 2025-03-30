@@ -1,0 +1,21 @@
+services:
+  monerod:
+    image: monerod:0.18.3.4
+    container_name: monerod
+    pull_policy: build
+    build:
+      context: .
+      args:
+        - PLATFORM=linux-x64
+        - MONERO_VERSION=0.18.3.4
+        - PUID=1000
+        - PGID=1000
+    restart: unless-stopped
+    volumes:
+      # IMPORTANT: data folder must exist before starting container
+      - ./data:/app/monero/bitmonero
+      - ./monerod.conf:/app/monero/monerod.conf
+    ports:
+      - 18081:18081 # rpc
+      - 18089:18089 # restricted rpc
+      - 18080:18080 # p2p
