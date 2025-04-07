@@ -59,7 +59,7 @@ docker compose -f docker-compose.build.yml up -d
 
 | Argument         | Description                                                                                                                                                                   |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MONERO_VERSION` | The version of Monero to use. e.g. `0.18.3.4`                                                                                                                                 |
+| `MONERO_VERSION` | The version of Monero to use. e.g. `0.18.4.0`                                                                                                                                 |
 | `PUID`           | User ID for the Monero user. e.g. `1000`                                                                                                                                      |
 | `PGID`           | Group ID for the Monero user. e.g. `1000`                                                                                                                                     |
 | `PLATFORM`       | Platform binary to download. Possible values: `android-armv7`, `android-armv8`, `freebsd-x64`, `linux-armv7`, `linux-armv8`, `linux-x64`, `linux-x86`, `mac-armv8`, `mac-x64` |

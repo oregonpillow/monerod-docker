@@ -1,13 +1,13 @@
 services:
   monerod:
-    image: monerod:0.18.3.4
+    image: monerod:0.18.4.0
     container_name: monerod
     pull_policy: build
     build:
       context: .
       args:
         - PLATFORM=linux-x64
-        - MONERO_VERSION=0.18.3.4
+        - MONERO_VERSION=0.18.4.0
         - PUID=1000
         - PGID=1000
     restart: unless-stopped
