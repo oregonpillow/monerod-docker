@@ -6,7 +6,7 @@ on:
       - "master"
 
 env:
-  MONERO_VERSION: 0.18.4.6
+  MONERO_VERSION: 0.18.5.0
   PUID: 1000
   PGID: 1000
 
