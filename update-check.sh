@@ -16,8 +16,8 @@ if [ ! -d "$REPOSITORY_PATH" ]; then
   exit 1
 fi
 
-cd "$DIRECTORY_PATH" || {
-  echo "Failed to change directory to: $DIRECTORY_PATH"
+cd "$REPOSITORY_PATH" || {
+  echo "Failed to change directory to: $REPOSITORY_PATH"
   exit 1
 }
 
